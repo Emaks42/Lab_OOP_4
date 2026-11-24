@@ -22,7 +22,7 @@ Circle::Circle(): r_(0) {}
 
 Circle::Circle(double r) {
     if (r < 0) {
-        throw "not allowed radius of circle";
+        throw std::invalid_argument("not allowed radius of circle");
     }
     r_ = r;
 }
@@ -47,10 +47,10 @@ Ellipse::Ellipse(): a_(0), b_(0) {}
 
 Ellipse::Ellipse(double a, double b) {
     if (a < 0) {
-        throw "not allowed a of ellipse";
+        throw std::invalid_argument("not allowed a of ellipse");
     }
     if (b < 0) {
-        throw "not allowed b of ellipse";
+        throw std::invalid_argument("not allowed b of ellipse");
     }
     a_ = a;
     b_ = b;
@@ -76,10 +76,10 @@ Sector::Sector(): r_(0), theta_(0) {}
 
 Sector::Sector(double r, double theta) {
     if (r < 0) {
-        throw "not allowed radius of sector";
+        throw std::invalid_argument("not allowed radius of sector");
     }
     if (theta < 0 || theta > 2 * M_PI) {
-        throw "not allowed theta of sector";
+        throw std::invalid_argument("not allowed theta of sector");
     }
     r_ = r;
     theta_ = theta;
