@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <utility>
 #include <algorithm>
-#include <vector>
 #include "shapes.h"
 
 class Shape2DCollection {
@@ -12,7 +11,7 @@ class Shape2DCollection {
     std::size_t size_ = 0;
     std::size_t capacity_ = 0;
     void clear_data();
-    void swap(Shape2DCollection&);
+    void swap(Shape2DCollection&) noexcept;
 public:
     Shape2DCollection();
     Shape2DCollection(const Shape2DCollection&);

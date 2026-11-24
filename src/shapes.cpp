@@ -1,11 +1,11 @@
 #include "../include/shapes.h"
 
-std::ostream& operator<<(std::ostream& os, Shape2D s) {
+std::ostream& operator<<(std::ostream& os, Shape2D& s) {
     s.print(os);
     return os;
 }
 
-std::istream& operator>>(std::istream& is_, Shape2D s) {
+std::istream& operator>>(std::istream& is_, Shape2D& s) {
     s.read(is_);
     return is_;
 }
@@ -43,6 +43,10 @@ void Circle::read(std::istream& is_) {
     is_ >> r_;
 }
 
+Shape2D* Circle::copy() {
+    return new Circle(*this);
+}
+
 Ellipse::Ellipse(): a_(0), b_(0) {}
 
 Ellipse::Ellipse(double a, double b) {
@@ -72,6 +76,10 @@ void Ellipse::read(std::istream& is_) {
     is_ >> a_ >> b_;
 }
 
+Shape2D* Ellipse::copy() {
+    return new Ellipse(*this);
+}
+
 Sector::Sector(): r_(0), theta_(0) {}
 
 Sector::Sector(double r, double theta) {
@@ -99,4 +107,8 @@ void Sector::print(std::ostream& os) {
 
 void Sector::read(std::istream& is_) {
     is_ >> r_ >> theta_;
+}
+
+Shape2D* Sector::copy() {
+    return new Sector(*this);
 }

@@ -6,16 +6,18 @@
 
 class Shape2D {
 public:
-    virtual double metric() const;
-    virtual void print(std::ostream&);
-    virtual void read(std::istream&);
+    virtual double metric() const = 0;
+    virtual void print(std::ostream&) = 0;
+    virtual void read(std::istream&) = 0;
+    virtual Shape2D* copy() = 0;
     friend std::ostream& operator<<(std::ostream&, Shape2D);
     friend std::istream& operator>>(std::istream&, Shape2D);
     operator double() const;
     bool operator==(const Shape2D&);
+    virtual ~Shape2D() = default;
 };
 
-class Circle: Shape2D {
+class Circle: public Shape2D {
     double r_{};
 public:
     Circle();
@@ -23,10 +25,11 @@ public:
     double metric() const override;
     void print(std::ostream&) override;
     void read(std::istream&) override;
+    Shape2D* copy() override;
     double radius() const;
 };
 
-class Ellipse: Shape2D {
+class Ellipse: public Shape2D {
     double a_{}, b_{};
 public:
     Ellipse();
@@ -34,10 +37,11 @@ public:
     double metric() const override;
     void print(std::ostream&) override;
     void read(std::istream&) override;
+    Shape2D* copy() override;
     double isCircle(double) const;
 };
 
-class Sector: Shape2D {
+class Sector: public Shape2D {
     double r_{}, theta_{};
 public:
     Sector();
@@ -45,5 +49,6 @@ public:
     double metric() const override;
     void print(std::ostream&) override;
     void read(std::istream&) override;
+    Shape2D* copy() override;
     double isSemicircle(double) const;
 };

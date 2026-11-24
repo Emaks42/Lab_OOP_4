@@ -8,7 +8,7 @@ Shape2DCollection::Shape2DCollection(const Shape2DCollection& other) {
     }
     Shape2D** new_data = new Shape2D*[other.capacity_];
     for (std::size_t i{}; i < other.size_; ++i) {
-        new_data[i] = new Shape2D(*other.data_[i]);
+        new_data[i] = (*other.data_[i]).copy();
     }
 
     clear_data();
@@ -46,7 +46,7 @@ void Shape2DCollection::swap(Shape2DCollection& other) noexcept {
 
 Shape2DCollection& Shape2DCollection::operator=(Shape2DCollection other) {
     if (data_ == other.data_ && size_ == other.size_ && capacity_ == other.capacity_) {
-        return;
+        return *this;
     }
     swap(other);
     return *this;
@@ -57,6 +57,13 @@ Shape2D& Shape2DCollection::operator[](std::size_t i) {
         throw std::out_of_range("index out of Shape2DCollection size");
     }
     return *data_[i];
+}
+
+Shape2DCollection::~Shape2DCollection() {
+    clear_data();
+    data_ = nullptr;
+    size_ = 0;
+    capacity_ = 0;
 }
 
 const Shape2D& Shape2DCollection::operator[](std::size_t i) const {
@@ -81,8 +88,7 @@ bool Shape2DCollection::add(Shape2D& s) {
         delete[] data_;
         data_ = new_data_;
     }
-    Shape2D* new_s = new Shape2D(s);
-    data_[size_] = new_s;
+    data_[size_] = s.copy();
     ++size_;
     return true;
 }
@@ -95,6 +101,7 @@ bool Shape2DCollection::remove(Shape2D& s) {
                 data_[j] = data_[j+1];
             }
             delete sav;
+            --size_;
             return true;
         }
     }
