@@ -10,8 +10,8 @@ public:
     virtual void print(std::ostream&) = 0;
     virtual void read(std::istream&) = 0;
     virtual Shape2D* copy() = 0;
-    friend std::ostream& operator<<(std::ostream&, Shape2D);
-    friend std::istream& operator>>(std::istream&, Shape2D);
+    friend std::ostream& operator<<(std::ostream&, Shape2D&);
+    friend std::istream& operator>>(std::istream&, Shape2D&);
     operator double() const;
     bool operator==(const Shape2D&);
     virtual ~Shape2D() = default;

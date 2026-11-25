@@ -21,7 +21,7 @@ bool Shape2D::operator==(const Shape2D& other) {
 Circle::Circle(): r_(0) {}
 
 Circle::Circle(double r) {
-    if (r < 0) {
+    if (r < 0 || std::isinf(r) || std::isnan(r)) {
         throw std::invalid_argument("not allowed radius of circle");
     }
     r_ = r;
@@ -50,10 +50,10 @@ Shape2D* Circle::copy() {
 Ellipse::Ellipse(): a_(0), b_(0) {}
 
 Ellipse::Ellipse(double a, double b) {
-    if (a < 0) {
+    if (a < 0 || std::isinf(a) || std::isnan(a)) {
         throw std::invalid_argument("not allowed a of ellipse");
     }
-    if (b < 0) {
+    if (b < 0 || std::isinf(b) || std::isnan(b)) {
         throw std::invalid_argument("not allowed b of ellipse");
     }
     a_ = a;
@@ -83,10 +83,10 @@ Shape2D* Ellipse::copy() {
 Sector::Sector(): r_(0), theta_(0) {}
 
 Sector::Sector(double r, double theta) {
-    if (r < 0) {
+    if (r < 0 || std::isinf(r) || std::isnan(r)) {
         throw std::invalid_argument("not allowed radius of sector");
     }
-    if (theta < 0 || theta > 2 * M_PI) {
+    if (theta < 0 || theta > 2 * M_PI || std::isinf(theta) || std::isnan(theta)) {
         throw std::invalid_argument("not allowed theta of sector");
     }
     r_ = r;

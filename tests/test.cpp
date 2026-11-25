@@ -23,6 +23,16 @@ TEST(Shapes2DCreationTests, Shapes2DCreationTestDefault)
     EXPECT_NEAR(0, s.metric(), 1e-5);
 }
 
+TEST(Shapes2DCreationTests, Shapes2DCreationTestIncorrectParam)
+{
+    EXPECT_THROW(Circle(-4), std::invalid_argument);
+    EXPECT_THROW(Ellipse(-4, 2), std::invalid_argument);
+    EXPECT_THROW(Ellipse(4, -2), std::invalid_argument);
+    EXPECT_THROW(Sector(4, 20), std::invalid_argument);
+    EXPECT_THROW(Sector(-4, 2), std::invalid_argument);
+    EXPECT_THROW(Sector(4, -2), std::invalid_argument);
+}
+
 TEST(Shapes2DSpecMethodsTests, Shapes2DSpecMethodsTestCircle)
 {
     Circle c(2);
@@ -99,4 +109,95 @@ TEST(Shapes2DCollectionMetricTests, Shapes2DCollectionMetricTestBase)
     Sector s(3, M_PI);
     sc.add(c); sc.add(e); sc.add(s);
     EXPECT_NEAR(18.5 * M_PI, sc.metric(), 1e-5);
+}
+
+TEST(Shape2DReadWriteTests, Shape2DReadWriteTestCircle)
+{
+    Circle c_;
+    std::ofstream f1("1.txt", std::ios::trunc);
+    f1 << "2";
+    f1.close();
+    std::ifstream f2("1.txt");
+    f2 >> c_;
+    f2.close();
+    EXPECT_NEAR(c_.metric(), 4 * M_PI, 1e-5);
+    std::ofstream f3("1.txt", std::ios::trunc);
+    f3 << c_;
+    f3.close();
+    std::ifstream f4("1.txt");
+    std::string res;
+    char c;
+    while (f4.get(c))
+    {
+        res += c;
+    }
+    f4.close();
+    ASSERT_TRUE(res == "Circle: r=2");
+}
+
+TEST(Shape2DReadWriteTests, Shape2DReadWriteTestEllipse)
+{
+    Ellipse e_;
+    std::ofstream f1("1.txt", std::ios::trunc);
+    f1 << "2 5";
+    f1.close();
+    std::ifstream f2("1.txt");
+    f2 >> e_;
+    f2.close();
+    EXPECT_NEAR(e_.metric(), 10 * M_PI, 1e-5);
+    std::ofstream f3("1.txt", std::ios::trunc);
+    f3 << e_;
+    f3.close();
+    std::ifstream f4("1.txt");
+    std::string res;
+    char c;
+    while (f4.get(c))
+    {
+        res += c;
+    }
+    f4.close();
+    ASSERT_TRUE(res == "Ellipse: a=2 b=5");
+}
+
+TEST(Shape2DReadWriteTests, Shape2DReadWriteTestSector)
+{
+    Sector s_;
+    std::ofstream f1("1.txt", std::ios::trunc);
+    f1 << "2 2";
+    f1.close();
+    std::ifstream f2("1.txt");
+    f2 >> s_;
+    f2.close();
+    EXPECT_NEAR(s_.metric(), 4, 1e-5);
+    std::ofstream f3("1.txt", std::ios::trunc);
+    f3 << s_;
+    f3.close();
+    std::ifstream f4("1.txt");
+    std::string res;
+    char c;
+    while (f4.get(c))
+    {
+        res += c;
+    }
+    f4.close();
+    ASSERT_TRUE(res == "Sector: r=2 angle=2");
+}
+
+TEST(Shape2DMetricTests, Shape2DMetricTestEquality)
+{
+    Circle c(2);
+    Ellipse e(1,4);
+    Sector s(0,0);
+    ASSERT_TRUE(e == c);
+    ASSERT_TRUE(e != s);
+}
+
+TEST(Shape2DMetricTests, Shape2DMetricTestToDouble)
+{
+    Circle c(2);
+    Ellipse e(2, 5);
+    Sector s(3, M_PI);
+    EXPECT_NEAR((double)c, c.metric(), 1e-5);
+    EXPECT_NEAR((double)e, e.metric(), 1e-5);
+    EXPECT_NEAR((double)s, s.metric(), 1e-5);
 }
